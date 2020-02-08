@@ -34,14 +34,16 @@
 								<div class="col-xs-3 col-md-3 text-center">
 									<b>Salary</b>
 								</div>
+								<div class="col-xs-3 col-md-3 text-center">
+									<b>Aksi</b>
+								</div>
 							</div>
-							<form action="" method="post">
 								<?php
-									$data = mysqli_query($con,"select nama.nama_nama as nama, work.nama_work as work, kategori.salary as salary from nama join work on work.id_work = nama.id_work join kategori on kategori.id_salary = work.id_salary");
+									$data = mysqli_query($con,"select nama.nama_nama as nama, work.nama_work as work, kategori.salary as salary, kategori.id_salary as id from nama join work on work.id_work = nama.id_work join kategori on kategori.id_salary = work.id_salary");
 									if (mysqli_num_rows($data)>0) {
 										while($rows = mysqli_fetch_array($data)){
 								?>
-							<div class="col-xs-12 col-md-12">
+							<div class="col-xs-12 col-md-12" style="margin-top: 10px;">
 								<div class="col-xs-3 col-md-3">
 									<?php echo $rows['nama']; ?>
 								</div>
@@ -50,6 +52,10 @@
 								</div>
 								<div class="col-xs-3 col-md-3">
 									<?php echo $rows['salary']; ?>
+								</div>
+								<div class="col-xs-3 col-md-3 text-center">
+									<button class="btn btn-sm btn-warning" data-id="<?php echo $rows['id']; ?>" data-nama="<?php echo $rows['nama']; ?>" data-work="<?php echo $rows['work']; ?>" data-salary="<?php echo $rows['salary']; ?>" data-toggle="modal" data-target="#modal-ubah">Ubah</button>
+									<button class="btn btn-sm btn-danger">Hapus</button>
 								</div>
 							</div>
 								<?php
@@ -62,7 +68,6 @@
 								<?php
 									}
 								?>
-							</form>
 						</div>
 					</div>
 				</div>
@@ -80,7 +85,7 @@
 				</div>
 				<div class="modal-body">
 					<div class="col-sm-12 col-md-12 text-center">
-						<form action="tambah.php" method="post">
+						<form action="ubah.php" method="post">
 							<div class="panel panel-primary" style="margin-top: 10px; border: solid 0px;">
 								<div class="panel-body">
 									<div class="col-xs-12 col-md-12" style="margin-top: 10px;">
@@ -112,7 +117,7 @@
 											
 										</div>
 										<div class="col-xs-8 col-md-8" style="margin-top: 10px;">
-											<button type="submit" name="tombol-simpan" class="btn btn-primary btn-block">Tambah</button>
+											<button type="submit" name="tombol-ubah" class="btn btn-warning btn-block">Ubah</button>
 										</div>
 									</div>
 								</div>
@@ -126,5 +131,77 @@
 		</div>
 	</div>
 	<!-- Akhir Modal Tambah-->
+
+	<!-- Modal Ubah-->
+	<div class="modal fade" id="modal-ubah" role="dialog">
+		<div class="modal-dialog">
+			<!-- Modal Content -->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title text-center">Ubah Data</h4>
+				</div>
+				<div class="modal-body">
+					<div class="col-sm-12 col-md-12 text-center">
+						<form action="ubah.php" method="post">
+							<div class="panel panel-primary" style="margin-top: 10px; border: solid 0px;">
+								<div class="panel-body">
+									<div class="col-xs-12 col-md-12" style="margin-top: 10px;">
+										<div class="col-xs-4 col-md-4">
+											<h5>Nama</h5>
+										</div>
+										<div class="col-xs-8 col-md-8">
+											<input type="text" class="form-control" name="nama" value="">
+										</div>
+									</div>
+									<div class="col-xs-12 col-md-12" style="margin-top: 10px;">
+										<div class="col-xs-4 col-md-4">
+											<h5>Work</h5>
+										</div>
+										<div class="col-xs-8 col-md-8">
+											<input type="text" class="form-control" name="work" value="">
+										</div>
+									</div>
+									<div class="col-xs-12 col-md-12" style="margin-top: 10px;">
+										<div class="col-xs-4 col-md-4">
+											<h5>Salary</h5>
+										</div>
+										<div class="col-xs-8 col-md-8">
+											<input type="text" class="form-control" name="salary" value="">
+											<input type="hidden" class="form-control" name="id" value="">
+										</div>
+									</div>
+									<div class="col-xs-12 col-md-12">
+										<div class="col-xs-4 col-md-4">
+											
+										</div>
+										<div class="col-xs-8 col-md-8" style="margin-top: 10px;">
+											<button type="submit" name="tombol-simpan" class="btn btn-warning btn-block">Ubah</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Akhir Modal Ubah-->
+	<script>
+		$('#modal-ubah').on('show.bs.modal', function (event) {
+          var button = $(event.relatedTarget)
+          var id = button.data('id') 
+          var nama = button.data('nama') 
+          var work = button.data('work')
+          var salary = button.data('salary')
+          var modal = $(this)
+          modal.find('.modal-body #id').val(id);
+          modal.find('.modal-body #nama').val(nama);
+          modal.find('.modal-body #work').val(work);
+          modal.find('.modal-body #salary').val(salary);
+        })
+	</script>
 </body>
 </html>
