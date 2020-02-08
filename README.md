@@ -1,1 +1,1 @@
-<img scr"/soal6/arcademy.png">
+<img src="soal6/tampilan.png">
